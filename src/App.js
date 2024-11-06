@@ -4,6 +4,7 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import ProtectedPage from './components/ProtectedPage';
 import { auth } from './firebase';
+import Home from './components/Home';
 
 const App = () => {
   const [user, setUser] = React.useState(null);
@@ -22,7 +23,9 @@ const App = () => {
           path="/protected"
           element={user ? <ProtectedPage /> : <SignIn />}
         />
-        <Route path="/" element={<h1>Welcome! Please Sign Up or Sign In</h1>} />
+        <Route path="/" element={<SignIn />} />
+        <Route path="/home" element={<Home />} />
+
       </Routes>
     </Router>
   );
