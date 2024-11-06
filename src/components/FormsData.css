@@ -1,0 +1,70 @@
+/* src/components/FormsData.css */
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table, th, td {
+    border: 1px solid black;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f4f4f4;
+  }
+  
+  /* styles.css */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse; /* Ensures no double borders between cells */
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    border: 1px solid #ddd; /* Light gray border for table cells */
+    padding: 8px; /* Add some space inside cells */
+    text-align: left; /* Align text to the left */
+  }
+  
+  .custom-table th {
+    background-color: #f2f2f2; /* Light gray background for header */
+    font-weight: bold;
+  }
+  
+  .custom-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Add alternate row colors */
+  }
+  
+  .custom-table tr:hover {
+    background-color: #f1f1f1; /* Highlight row on hover */
+  }
+  /* styles.css */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .custom-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .custom-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .custom-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
