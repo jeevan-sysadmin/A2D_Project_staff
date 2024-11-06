@@ -1,0 +1,77 @@
+.process-analysis {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .card {
+    width: 80%;
+    max-width: 400px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  
+  .filter label {
+    margin-right: 10px;
+  }
+  
+  select {
+    padding: 5px;
+    font-size: 1rem;
+  }
+  
+  .totals {
+    margin-top: 20px;
+  }
+  
+  .totals ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .totals li {
+    margin: 5px 0;
+  }
+  
+  .filtered-submissions {
+    width: 100%;
+    /* max-width: 1000px; */
+    margin-top: 20px;
+  }
+  
+  .filtered-submissions table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .filtered-submissions th, .filtered-submissions td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #000000;
+  }
+  
+  .filtered-submissions th {
+    background-color: #f4f4f4;
+  }
+  
+  @media (max-width: 768px) {
+    .card {
+      width: 90%;
+    }
+  
+    .filtered-submissions {
+      width: 100%;
+    }
+  }
+  

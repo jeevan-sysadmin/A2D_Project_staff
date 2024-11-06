@@ -1,33 +1,68 @@
 /* src/components/Sidebar.css */
 .sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #333;
-    color: white;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding-top: 20px;
-  }
-  
-  .sidebar h2 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    padding: 15px 20px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .sidebar ul li:hover {
-    background-color: #555;
-  }
-  
+  width: 250px;
+  height: 100vh;
+  background-color: #522da8e1;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+}
+
+.sidebar h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.sidebar ul li:hover {
+  background-color: #555;
+}
+
+/* Sign-out button styles */
+.sign-out-button {
+  width: 50%;
+  padding: 10px;
+  /* background-color: #ff4747; */
+  border: none;
+  /* color: white; */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-top: auto; /* To position the button at the bottom */
+}
+
+.sign-out-button:hover {
+  background-color: #e03e3e;
+  transform: scale(1.05); /* Slight grow effect on hover */
+}
+
+.sign-out-button:focus {
+  outline: none; /* Remove outline on focus */
+}
+
+/* src/components/Sidebar.css */
+.admin-panel-title {
+  cursor: pointer; /* Show pointer cursor on hover */
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: white;
+  transition: color 0.3s;
+}
+
+.admin-panel-title:hover {
+  color: #ff4747; /* Change color on hover */
+}

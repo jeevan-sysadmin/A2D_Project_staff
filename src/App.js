@@ -2,9 +2,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
 import Home from './components/Home';
+import ProcessAnalysis from './components/ProcessAnalysis';
 import ProtectedPage from './components/ProtectedPage';
+import StaffList from './components/StaffList';
 import FormsData from './components/FormsData'; // Import FormsData component
 import Layout from './components/Layout';
 import { auth } from './firebase';
@@ -29,7 +30,6 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
 
         {/* Wrap protected routes with Layout to ensure Sidebar is visible */}
         <Route
@@ -43,6 +43,15 @@ const App = () => {
         <Route
           path="/forms-data"
           element={user ? <Layout><FormsData /></Layout> : <Navigate to="/signin" />}
+        />
+         <Route
+          path="/Staffs"
+          element={user ? <Layout><StaffList /></Layout> : <Navigate to="/signin" />}
+        />
+
+         <Route
+          path="/Analysis"
+          element={user ? <Layout><ProcessAnalysis /></Layout> : <Navigate to="/signin" />}
         />
 
         {/* Default route - redirect to home if user is logged in */}

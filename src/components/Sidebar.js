@@ -17,14 +17,22 @@ const Sidebar = () => {
     }
   };
 
+  // Function to navigate to home when Admin Panel is clicked
+  const handleAdminPanelClick = () => {
+    navigate('/home'); // Redirect to /home when Admin Panel is clicked
+  };
+
   return (
     <div className="sidebar">
-      <h2>Admin Panel</h2>
+      {/* Clickable Admin Panel */}
+      <h2 onClick={handleAdminPanelClick} className="admin-panel-title">Admin Panel</h2>
+
       <ul>
         <li onClick={() => navigate('/forms-data')}>Forms Data</li>
-        <li onClick={() => navigate('/export-data')}>Export Data</li>
-        <li onClick={() => navigate('/delete-data')}>Delete Data</li>
+        <li onClick={() => navigate('/Analysis')}>ProcessAnalysis</li>
+        <li onClick={() => navigate('/Staffs')}>Staffs</li>
       </ul>
+
       <button className="sign-out-button" onClick={handleSignOut}>Sign Out</button>
     </div>
   );
