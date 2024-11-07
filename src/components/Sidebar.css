@@ -42,6 +42,7 @@
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
   margin-top: auto; /* To position the button at the bottom */
+  border-radius: 10px; /* Add border radius for rounded corners */
 }
 
 .sign-out-button:hover {

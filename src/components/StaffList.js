@@ -1,59 +1,56 @@
 import React, { useEffect, useState } from 'react';
-import { auth } from '../firebase'; // Import Firebase Authentication
+import { getFirestore, collection, getDocs } from 'firebase/firestore'; // Modular imports
+import { storage } from '../firebase'; // Assuming you need storage for something else
+import './StaffList.css';
 
-const StaffList = () => {
-  const [user, setUser] = useState(null);  // To store the authenticated user data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
-
-  // Fetch user data from Firebase Authentication
-  const fetchUserData = () => {
-    const currentUser = auth.currentUser; // Get the current authenticated user
-
-    if (currentUser) {
-      setUser({
-        uid: currentUser.uid,
-        email: currentUser.email,
-        displayName: currentUser.displayName || 'No Display Name', // Use displayName if available
-        photoURL: currentUser.photoURL || 'https://www.example.com/default-avatar.jpg', // Default image if no photo
-      });
-      setLoading(false);
-    } else {
-      setError('No user is authenticated');
-      setLoading(false);
-    }
-  };
-
+const UsersPage = () => {
+  const [users, setUsers] = useState([]);
+  
   useEffect(() => {
-    fetchUserData(); // Fetch user data when the component mounts
+    const fetchUsersData = async () => {
+      const db = getFirestore(); // Initialize Firestore
+      const usersCollection = collection(db, 'users'); // Reference to the 'users' collection
+      const snapshot = await getDocs(usersCollection); // Get all docs in the collection
+      const usersList = snapshot.docs.map(doc => doc.data()); // Extract data from docs
+      setUsers(usersList);
+    };
+
+    fetchUsersData();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   return (
-    <div className="staff-list">
-      <h1>Authenticated User Information</h1>
-      {user ? (
-        <div>
-          <p><strong>UID:</strong> {user.uid}</p>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Name:</strong> {user.displayName}</p>
-          <p>
-            <strong>Profile Picture:</strong>
-            <img src={user.photoURL} alt="Profile" width="100" height="100" />
-          </p>
-        </div>
-      ) : (
-        <p>No user data available.</p>
-      )}
+    <div className="users-table-container">
+      <h2>Staff's Details</h2>
+      <table className="users-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Profile Picture</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user, index) => (
+            <tr key={index}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>
+                {user.profilePic ? (
+                  <img
+                    src={user.profilePic}
+                    alt={user.name}
+                    className="profile-pic"
+                  />
+                ) : (
+                  'No Profile Pic'
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default StaffList;
+export default UsersPage;

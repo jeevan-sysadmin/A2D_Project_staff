@@ -1,0 +1,62 @@
+/* Home.css */
+
+/* Container that holds the sidebar and main content */
+.home-container {
+    display: flex;
+    height: 90vh;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  
+  /* Main content area */
+  .main-content {
+    margin-left: 50px; /* Adjust based on the sidebar width */
+    padding: 20px;
+    width: calc(90%); /* Ensure content adjusts dynamically */
+    background-color: #ecf0f1;
+  }
+  
+  /* Styling for the logo container */
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  /* Logo styling */
+  .logo {
+    width: 500px; /* Adjust based on your logo's desired size */
+    height: auto;
+  }
+  
+  /* Title styling */
+  h1 {
+    font-size: 30px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  
+  /* Paragraph text styling */
+  p {
+    font-size: 18px;
+    color: #7f8c8d;
+  }
+  
+  /* Sign-out button styling */
+  button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #c0392b;
+  }
+  

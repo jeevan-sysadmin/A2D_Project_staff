@@ -1,21 +1,23 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons'; // Import specific brand icons
-import { auth, googleProvider } from '../firebase'; // Import Firebase auth and google provider
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from 'firebase/auth'; // Import auth methods
-import { useHistory } from 'react-router-dom'; // React router for navigation
+import { faGoogle, faFacebookF, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { auth, googleProvider, db, storage } from '../firebase';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import './Signin.css';
 
 class ModernLoginPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSignUp: false, // To toggle between sign-up and sign-in forms
+      isSignUp: false,
       email: '',
       password: '',
       name: '',
-      resetEmail: '', // For password reset functionality
-      showResetForm: false, // Toggle to show the password reset form
+      resetEmail: '',
+      showResetForm: false,
+      profilePic: null, // state for profile picture
     };
   }
 
@@ -30,29 +32,45 @@ class ModernLoginPage extends React.Component {
     this.setState({ [name]: value });
   };
 
+  handleFileChange = (e) => {
+    this.setState({ profilePic: e.target.files[0] });
+  };
+
   handleSubmit = async (e) => {
     e.preventDefault();
-
-    const { email, password, name, isSignUp } = this.state;
+    const { email, password, name, profilePic, isSignUp } = this.state;
 
     if (isSignUp) {
       try {
-        // Sign up logic
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        alert("Account created successfully!");
-        // Redirect to home after successful sign-up
-        window.location.href = '/home'; 
+        const user = userCredential.user;
+        let profilePicUrl = '';
+
+        if (profilePic) {
+          const profilePicRef = ref(storage, `profilePics/${user.uid}`);
+          await uploadBytes(profilePicRef, profilePic);
+          profilePicUrl = await getDownloadURL(profilePicRef);
+        }
+
+        await setDoc(doc(db, 'users', user.uid), {
+          uid: user.uid,
+          name: name,
+          email: email,
+          profilePic: profilePicUrl,
+          createdAt: new Date().toISOString(),
+        });
+
+        // alert("Account created successfully with profile picture!");
+        window.location.href = '/home';
       } catch (error) {
         console.error("Error during sign up: ", error.message);
         alert("Error during sign up");
       }
     } else {
       try {
-        // Sign in logic
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        alert("Logged in successfully!");
-        // Redirect to home after successful login
-        window.location.href = '/home'; 
+        await signInWithEmailAndPassword(auth, email, password);
+        // alert("Logged in successfully!");
+        window.location.href = '/home';
       } catch (error) {
         console.error("Error during sign in: ", error.message);
         alert("Error during sign in");
@@ -62,10 +80,22 @@ class ModernLoginPage extends React.Component {
 
   handleGoogleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-      alert("Google login successful!");
-      // Redirect to home after Google login
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const user = userCredential.user;
+
+      const userDocRef = doc(db, 'users', user.uid);
+      const userSnapshot = await getDoc(userDocRef);
+      if (!userSnapshot.exists()) {
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+          profilePic: user.photoURL,
+          createdAt: new Date().toISOString(),
+        });
+      }
+
+      // alert("Google login successful!");
       window.location.href = '/home';
     } catch (error) {
       console.error("Error with Google login: ", error.message);
@@ -86,9 +116,7 @@ class ModernLoginPage extends React.Component {
     }
   };
 
-  // componentDidMount: Run when the component is mounted
   componentDidMount() {
-    // Add event listeners for toggle buttons
     this.registerButton = document.getElementById('register');
     this.loginButton = document.getElementById('login');
 
@@ -98,21 +126,17 @@ class ModernLoginPage extends React.Component {
     }
   }
 
-  // componentWillUnmount: Cleanup before the component is unmounted
   componentWillUnmount() {
-    // Remove event listeners to prevent memory leaks
     if (this.registerButton && this.loginButton) {
       this.registerButton.removeEventListener('click', this.handleRegisterClick);
       this.loginButton.removeEventListener('click', this.handleLoginClick);
     }
   }
 
-  // Handle click on register button
   handleRegisterClick = () => {
     this.container.classList.add("active");
   };
 
-  // Handle click on login button
   handleLoginClick = () => {
     this.container.classList.remove("active");
   };
@@ -142,8 +166,6 @@ class ModernLoginPage extends React.Component {
           ) : (
             <form onSubmit={this.handleSubmit}>
               <h1>{isSignUp ? 'Create Account' : 'Sign In'}</h1>
-              {!isSignUp && <span>or use your email for sign in</span>}
-              {isSignUp && <span>or use your email for registration</span>}
               {isSignUp && (
                 <input
                   type="text"
@@ -169,6 +191,13 @@ class ModernLoginPage extends React.Component {
                 onChange={this.handleChange}
                 required
               />
+              {isSignUp && (
+                <input
+                  type="file"
+                  onChange={this.handleFileChange}
+                  accept="image/*"
+                />
+              )}
               {!isSignUp && (
                 <a href="#" onClick={() => this.setState({ showResetForm: true })}>
                   Forgot Your Password?
@@ -183,19 +212,17 @@ class ModernLoginPage extends React.Component {
             <div className={`toggle-panel toggle-left ${isSignUp ? 'hidden' : ''}`}>
               <h1>Welcome Back!</h1>
               <p>Enter your personal details to use all site features</p>
-              <button id="login">
-                Sign In
-              </button>
+              <button id="login" onClick={this.toggleForm}>Sign In</button>
             </div>
             <div className={`toggle-panel toggle-right ${isSignUp ? '' : 'hidden'}`}>
-              <h1>Hello, Friend!</h1>
+              <h1>Hello,A2D PC Factory</h1>
               <p>Register with your personal details to use all site features</p>
-              <button id="register">
-                Sign Up
-              </button>
+              <button id="register" onClick={this.toggleForm}>Sign Up</button>
               <div className="social-icons" style={{ display: 'flex', gap: '10px', fontSize: '15px' }}>
                 <FontAwesomeIcon icon={faGoogle} onClick={this.handleGoogleLogin} style={{ cursor: 'pointer' }} />
                 <FontAwesomeIcon icon={faFacebookF} />
+                <FontAwesomeIcon icon={faGithub} />
+                <FontAwesomeIcon icon={faLinkedinIn} />
               </div>
             </div>
           </div>

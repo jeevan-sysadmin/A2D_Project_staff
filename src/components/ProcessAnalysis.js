@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import './ProcessAnalysis.css'; // Make sure to create and import the CSS file
+import Papa from 'papaparse';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 const ProcessAnalysis = () => {
   const [processType, setProcessType] = useState(''); // Selected process type for filtering
@@ -12,7 +15,7 @@ const ProcessAnalysis = () => {
     accept: 0,
     reject: 0,
     hold: 0,
-    complete: 0
+    complete: 0,
   });
 
   const processTypes = ['pending', 'progressing', 'accept', 'reject', 'hold', 'complete'];
@@ -80,34 +83,81 @@ const ProcessAnalysis = () => {
     }
   };
 
+  // Export to CSV
+  const exportToCSV = () => {
+    const csvData = filteredSubmissions.map((submission) => ({
+      Name: submission.name || 'N/A',
+      Email: submission.email || 'N/A',
+      'Process Type': submission.processType || 'N/A',
+      'Submission Date': formatSubmissionDate(submission.submissionDate),
+    }));
+
+    const csv = Papa.unparse(csvData);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'submissions.csv';
+    link.click();
+  };
+
+  // Export to PDF (landscape table)
+  const exportToPDF = () => {
+    const doc = new jsPDF('landscape', 'mm', 'a4');
+    const tableData = filteredSubmissions.map((submission) => [
+      submission.name || 'N/A',
+      submission.email || 'N/A',
+      submission.processType || 'N/A',
+      formatSubmissionDate(submission.submissionDate),
+    ]);
+
+    doc.autoTable({
+      head: [['Name', 'Email', 'Process Type', 'Submission Date']],
+      body: tableData,
+      startY: 30,
+    });
+
+    doc.save('submissions.pdf');
+  };
+
   return (
     <div className="process-analysis">
-      <div className="card">
-        <h1>Process Analysis</h1>
+      <div className="card-container">
+        {/* Filter Card */}
+        <div className="card filter-card">
+          <h1>Process Analysis</h1>
 
-        {/* Process Type Filter */}
-        <div className="filter">
-          <label>Select Process Type:</label>
-          <select value={processType} onChange={(e) => setProcessType(e.target.value)}>
-            <option value="All">All</option>
-            {processTypes.map((type) => (
-              <option key={type} value={type}>
-                {type.charAt(0).toUpperCase() + type.slice(1)}
-              </option>
-            ))}
-          </select>
+          {/* Process Type Filter */}
+          <div className="filter">
+            <label>Select Process Type:</label>
+            <select value={processType} onChange={(e) => setProcessType(e.target.value)}>
+              <option value="All">All</option>
+              {processTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Process Totals */}
+          <div className="totals">
+            <h2>Process Totals</h2>
+            <ul>
+              {processTypes.map((type) => (
+                <li key={type}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}: {totals[type]}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* Process Totals */}
-        <div className="totals">
-          <h2>Process Totals</h2>
-          <ul>
-            {processTypes.map((type) => (
-              <li key={type}>
-                {type.charAt(0).toUpperCase() + type.slice(1)}: {totals[type]}
-              </li>
-            ))}
-          </ul>
+        {/* Export Card */}
+        <div className="card export-card">
+          <h2>Export Data</h2>
+          <button className="export-btn" onClick={exportToCSV}>Export to CSV</button>
+          <div></div>
+          <button className="export-btn" onClick={exportToPDF}>Export to PDF </button>
         </div>
       </div>
 

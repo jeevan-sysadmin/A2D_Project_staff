@@ -3,27 +3,21 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import Sidebar from '../components/Sidebar';
-
+import logo from '../assets/img/logo.png'; // Import the logo image
+import './Home.css'; // Import the CSS file
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  // Function to handle user sign-out
-  const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-      navigate('/signin'); // Redirect to the sign-in page after logging out
-    } catch (error) {
-      console.error('Error signing out:', error.message);
-    }
-  };
-
   return (
-    <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <div style={{ marginLeft: '250px', padding: '20px', width: '100%' }}>
-        <h1>Welcome to the Dashboard</h1>
+    <div className="home-container">
+      <Sidebar className="sidebar" />
+      <div className="main-content">
+        <h1>Welcome to the A2d PC Factory Admin panel</h1>
         <p>Select an option from the sidebar to manage your data.</p>
+      </div>
+
+      {/* Center the logo */}
+      <div className="logo-container">
+        <img src={logo} alt="Logo" className="logo" />
       </div>
     </div>
   );

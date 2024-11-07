@@ -4,9 +4,9 @@ import './FormsData.css';
 import { collection, getDocs, query, where, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { Card, CardContent, CardActions, Button, TextField, Grid, Box } from '@mui/material';
-import { CSVLink } from 'react-csv'; // Importing CSV export library
-import { jsPDF } from 'jspdf'; // Importing PDF export library
-import 'jspdf-autotable'; // Import the jsPDF autotable plugin
+import { CSVLink } from 'react-csv';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 const FormsData = () => {
   const [formSubmissions, setFormSubmissions] = useState([]);
@@ -38,43 +38,7 @@ const FormsData = () => {
   const handleFilter = async () => {
     try {
       let queryRef = collection(db, 'formSubmissions');
-
-      if (filterDate) {
-        const date = new Date(filterDate);
-        queryRef = query(
-          queryRef,
-          where('submissionDate', '>=', Timestamp.fromDate(date)),
-          where('submissionDate', '<', Timestamp.fromDate(new Date(date.setDate(date.getDate() + 1)))),
-        );
-      }
-
-      if (filterMonth) {
-        const startOfMonth = new Date(filterMonth + '-01');
-        const endOfMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth() + 1, 0);
-        queryRef = query(
-          queryRef,
-          where('submissionDate', '>=', Timestamp.fromDate(startOfMonth)),
-          where('submissionDate', '<=', Timestamp.fromDate(endOfMonth)),
-        );
-      }
-
-      if (filterYear) {
-        const startOfYear = new Date(filterYear, 0, 1);
-        const endOfYear = new Date(filterYear, 11, 31, 23, 59, 59);
-        queryRef = query(
-          queryRef,
-          where('submissionDate', '>=', Timestamp.fromDate(startOfYear)),
-          where('submissionDate', '<=', Timestamp.fromDate(endOfYear)),
-        );
-      }
-
-      const querySnapshot = await getDocs(queryRef);
-      const filteredSubmissions = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      setFormSubmissions(filteredSubmissions);
+      // Filtering logic goes here...
     } catch (error) {
       console.error('Error filtering data: ', error);
     }
@@ -129,19 +93,41 @@ const FormsData = () => {
     setFilterProcessType('');
   };
 
-  // Function to export selected rows to PDF in landscape orientation
-  const exportToPDF = () => {
-    const doc = new jsPDF('landscape'); // Set landscape orientation
+  // Export to CSV
+  const exportToCSV = () => {
     const selectedData = formSubmissions.filter(submission => selectedRows.includes(submission.id));
+    const csvData = selectedData.map((data) => [
+      data.name,
+      data.email,
+      data.age,
+      data.countryCode,
+      data.deliveryTime,
+      data.investment,
+      data.location,
+      data.monthlyIncome,
+      data.occupation,
+      data.purpose,
+      data.processType || 'N/A',
+      formatDate(data.submissionDate),
+    ]);
 
-    // Set title
-    doc.setFontSize(16);
-    doc.text('Form Submissions', 10, 10);
-
-    // Table header
     const headers = ['Name', 'Email', 'Age', 'Country Code', 'Delivery Time', 'Investment', 'Location', 'Monthly Income', 'Occupation', 'Purpose', 'Process Type', 'Submission Date'];
 
-    // Table rows
+    const csvContent = [headers, ...csvData].map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'form_submissions.csv';
+    link.click();
+  };
+
+  // Export to PDF
+  const exportToPDF = () => {
+    const doc = new jsPDF('landscape');
+    const selectedData = formSubmissions.filter(submission => selectedRows.includes(submission.id));
+
+    const headers = ['Name', 'Email', 'Age', 'Country Code', 'Delivery Time', 'Investment', 'Location', 'Monthly Income', 'Occupation', 'Purpose', 'Process Type', 'Submission Date'];
+
     const rows = selectedData.map((data) => [
       data.name,
       data.email,
@@ -157,11 +143,10 @@ const FormsData = () => {
       formatDate(data.submissionDate),
     ]);
 
-    // Use autoTable to add table
     doc.autoTable({
       head: [headers],
       body: rows,
-      startY: 20, // Start Y position for the table
+      startY: 20,
     });
 
     doc.save('form_submissions.pdf');
@@ -172,13 +157,11 @@ const FormsData = () => {
   }
 
   return (
-    <div>
+    <div className="process-analysis">
       <h1>Forms Data</h1>
-
-      {/* Grid Layout for Old and New Cards */}
-      <Grid container spacing={2}>
-        {/* Old Card: Filter and Actions */}
-        <Grid item xs={12} sm={6}>
+      <div className="card-container">
+        {/* Filter Card */}
+        <div className="card filter-card">
           <Card sx={{ padding: 1 }}>
             <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <TextField
@@ -221,59 +204,19 @@ const FormsData = () => {
               </Button>
             </CardActions>
           </Card>
-        </Grid>
+        </div>
 
-        {/* New Card: Export Buttons */}
-        <Grid item xs={12} sm={3} style={{ marginLeft: 6 }}>
-          <Card sx={{ padding: 1 }}>
-            <CardContent>
-              <div style={{ marginBottom: '10px' }}>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <CSVLink
-                    data={selectedRows.length > 0 ? formSubmissions.filter(submission => selectedRows.includes(submission.id)) : formSubmissions} // Export all if no rows selected
-                    filename={'form_submissions.csv'}
-                  >
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      disabled={selectedRows.length === 0}
-                      sx={{
-                        backgroundColor: '#4caf50',
-                        color: 'white',
-                        '&:hover': {
-                          backgroundColor: '#45a049',
-                        },
-                      }}
-                    >
-                      Export to CSV
-                    </Button>
-                  </CSVLink>
+        <div className="card export-card">
+          <h2>Export Data</h2>
+          <button className="export-btn" onClick={exportToCSV}>Export to CSV</button>
+          <div></div>
+          <button className="export-btn" onClick={exportToPDF}>Export to PDF</button>
+        </div>
+      </div>
 
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={exportToPDF}
-                    disabled={selectedRows.length === 0}
-                    sx={{
-                      backgroundColor: '#2196f3',
-                      color: 'white',
-                      '&:hover': {
-                        backgroundColor: '#1976d2',
-                      },
-                    }}
-                  >
-                    Export to PDF
-                  </Button>
-                </Box>
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-
-     {/* Table for displaying form submissions */}
-     {formSubmissions.length > 0 ? (
-        <table className="table table-bordered" style={{ width: '100%' }}>
+      {/* Table for form submissions */}
+      {formSubmissions.length > 0 ? (
+        <table className="custom-table" style={{ width: '100%' }}>
           <thead>
             <tr>
               <th>
@@ -324,7 +267,7 @@ const FormsData = () => {
                     value={submission.processType || ''}
                     onChange={(e) => updateProcessType(submission.id, e.target.value)}
                   >
-                    <option value="">Select Process Type</option>
+                    <option value="">Select</option>
                     <option value="progressing">Progressing</option>
                     <option value="accept">Accept</option>
                     <option value="reject">Reject</option>
