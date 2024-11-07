@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { db } from '../firebase';
+import { db } from '../../firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import './ProcessAnalysis.css'; // Make sure to create and import the CSS file
 import Papa from 'papaparse';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+import Sidebar from '../Sidebar';
 
 const ProcessAnalysis = () => {
   const [processType, setProcessType] = useState(''); // Selected process type for filtering
@@ -121,6 +122,7 @@ const ProcessAnalysis = () => {
 
   return (
     <div className="process-analysis">
+      <Sidebar className="sidebar" />
       <div className="card-container">
         {/* Filter Card */}
         <div className="card filter-card">
@@ -156,8 +158,7 @@ const ProcessAnalysis = () => {
         <div className="card export-card">
           <h2>Export Data</h2>
           <button className="export-btn" onClick={exportToCSV}>Export to CSV</button>
-          <div></div>
-          <button className="export-btn" onClick={exportToPDF}>Export to PDF </button>
+          <button className="export-btn" onClick={exportToPDF}>Export to PDF</button>
         </div>
       </div>
 

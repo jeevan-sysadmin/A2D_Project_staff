@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { db } from '../firebase';
+import { db } from '../../firebase';
 import './FormsData.css';
 import { collection, getDocs, query, where, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { Card, CardContent, CardActions, Button, TextField, Grid, Box } from '@mui/material';
-import { CSVLink } from 'react-csv';
+// import { CSVLink } from 'react-csv';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+import Sidebar from '../Sidebar';
 
 const FormsData = () => {
   const [formSubmissions, setFormSubmissions] = useState([]);
@@ -159,10 +160,11 @@ const FormsData = () => {
   return (
     <div className="process-analysis">
       <h1>Forms Data</h1>
+      <Sidebar className="sidebar" />
       <div className="card-container">
         {/* Filter Card */}
         <div className="card filter-card">
-          <Card sx={{ padding: 1 }}>
+          {/* <Card sx={{ padding: 1 }}> */}
             <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <TextField
                 label="Date"
@@ -203,7 +205,7 @@ const FormsData = () => {
                 Delete
               </Button>
             </CardActions>
-          </Card>
+          {/* </Card> */}
         </div>
 
         <div className="card export-card">

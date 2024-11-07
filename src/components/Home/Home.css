@@ -59,4 +59,66 @@
   button:hover {
     background-color: #c0392b;
   }
+  /* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+  .home-container {
+    flex-direction: column;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .logo-container {
+    margin-top: 30px;
+  }
+
+  .logo {
+    width: 250px; /* Adjust logo size for smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .logo {
+    width: 200px; /* Further reduce logo size for mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  
+  h1 {
+    font-size: 24px; /* Smaller title for mobile */
+  }
+
+  p {
+    font-size: 16px; /* Smaller paragraph for mobile */
+  }
+
+  button {
+    padding: 8px 16px; /* Smaller button padding for mobile */
+    font-size: 14px;
+  }
+
+  .logo {
+    width: 240px; /* Further reduce logo size for mobile */
+  }
+  .main-content {
+    margin-left: 50;
+    
+  }
+
+  
+  
+}
+
   

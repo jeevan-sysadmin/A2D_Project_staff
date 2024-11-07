@@ -1,6 +1,7 @@
 /* src/components/Sidebar.css */
+
 .sidebar {
-  width: 250px;
+  width: 140px;
   height: 100vh;
   background-color: #522da8e1;
   color: white;
@@ -8,12 +9,29 @@
   top: 0;
   left: 0;
   padding-top: 20px;
+  transition: width 0.3s ease;
+  overflow: hidden;
 }
 
-.sidebar h2 {
-  text-align: center;
+.sidebar.closed {
+  width: 60px; /* Reduced width when closed */
+}
+
+.sidebar .toggle-btn {
+  font-size: 28px;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 1px;
+}
+
+.admin-panel-title {
   font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
 }
 
 .sidebar ul {
@@ -22,7 +40,7 @@
 }
 
 .sidebar ul li {
-  padding: 15px 20px;
+  padding: 15px;
   cursor: pointer;
   transition: background 0.3s;
 }
@@ -31,39 +49,30 @@
   background-color: #555;
 }
 
-/* Sign-out button styles */
 .sign-out-button {
-  width: 50%;
+  width: 80%;
   padding: 10px;
-  /* background-color: #ff4747; */
+  margin-top: auto;
   border: none;
-  /* color: white; */
+  background-color: #e03e3e;
+  color: white;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  margin-top: auto; /* To position the button at the bottom */
-  border-radius: 10px; /* Add border radius for rounded corners */
+  border-radius: 5px;
+  transition: background-color 0.3s;
 }
 
 .sign-out-button:hover {
-  background-color: #e03e3e;
-  transform: scale(1.05); /* Slight grow effect on hover */
+  background-color: #c32f2f;
 }
 
-.sign-out-button:focus {
-  outline: none; /* Remove outline on focus */
+/* Sidebar closed view styling */
+.sidebar.closed .admin-panel-title,
+.sidebar.closed ul li,
+.sidebar.closed .sign-out-button {
+  display: none;
 }
 
-/* src/components/Sidebar.css */
-.admin-panel-title {
-  cursor: pointer; /* Show pointer cursor on hover */
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: white;
-  transition: color 0.3s;
-}
-
-.admin-panel-title:hover {
-  color: #ff4747; /* Change color on hover */
+.sidebar.closed .toggle-btn {
+  margin-left: 10px; /* Adjust button position */
 }

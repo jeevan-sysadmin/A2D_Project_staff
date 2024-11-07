@@ -2,13 +2,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import SignIn from './components/SignIn';
-import Home from './components/Home';
-import ProcessAnalysis from './components/ProcessAnalysis';
+import Home from './pages/HomePage';
+import ProcessAnalysis from './pages/ProcessPage';
 import ProtectedPage from './components/ProtectedPage';
-import StaffList from './components/StaffList';
-import FormsData from './components/FormsData'; // Import FormsData component
+import StaffList from './pages/StaffPage';
+import FormsData from './pages/FormsPage'; // Import FormsData component
 import Layout from './components/Layout';
 import { auth } from './firebase';
+import Watermark from './components/Watermark/Watermark'; // Adjust path based on your file structure
 
 const App = () => {
   const [user, setUser] = React.useState(null);
@@ -28,38 +29,42 @@ const App = () => {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/signin" element={<SignIn />} />
+      <div>
+        {/* Watermark component inside Router */}
+        <Watermark />
 
-        {/* Wrap protected routes with Layout to ensure Sidebar is visible */}
-        <Route
-          path="/home"
-          element={user ? <Layout><Home /></Layout> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/protected"
-          element={user ? <Layout><ProtectedPage /></Layout> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/forms-data"
-          element={user ? <Layout><FormsData /></Layout> : <Navigate to="/signin" />}
-        />
-         <Route
-          path="/Staffs"
-          element={user ? <Layout><StaffList /></Layout> : <Navigate to="/signin" />}
-        />
+        <Routes>
+          <Route path="/signin" element={<SignIn />} />
 
-         <Route
-          path="/Analysis"
-          element={user ? <Layout><ProcessAnalysis /></Layout> : <Navigate to="/signin" />}
-        />
+          {/* Wrap protected routes with Layout to ensure Sidebar is visible */}
+          <Route
+            path="/home"
+            element={user ? <Layout><Home /></Layout> : <Navigate to="/signin" />}
+          />
+          <Route
+            path="/protected"
+            element={user ? <Layout><ProtectedPage /></Layout> : <Navigate to="/signin" />}
+          />
+          <Route
+            path="/forms-data"
+            element={user ? <Layout><FormsData /></Layout> : <Navigate to="/signin" />}
+          />
+          <Route
+            path="/Staffs"
+            element={user ? <Layout><StaffList /></Layout> : <Navigate to="/signin" />}
+          />
+          <Route
+            path="/Analysis"
+            element={user ? <Layout><ProcessAnalysis /></Layout> : <Navigate to="/signin" />}
+          />
 
-        {/* Default route - redirect to home if user is logged in */}
-        <Route
-          path="/"
-          element={user ? <Navigate to="/home" /> : <Navigate to="/signin" />}
-        />
-      </Routes>
+          {/* Default route - redirect to /signin if not authenticated */}
+          <Route
+            path="/"
+            element={<Navigate to={user ? "/home" : "/signin"} />}
+          />
+        </Routes>
+      </div>
     </Router>
   );
 };

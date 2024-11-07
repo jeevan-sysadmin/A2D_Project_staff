@@ -221,3 +221,69 @@ body{
 .toggle-container h1 {
     color: white; /* Sets h1 text color to black */
   }
+  @media (max-width: 768px) {
+    .container {
+      width: 90%;
+    }
+  }
+  
+  /* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .container button {
+        font-size: 14px;
+        padding: 12px 50px;
+    }
+
+    .container input {
+        font-size: 14px;
+        padding: 12px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .container form {
+        padding: 20px;
+    }
+
+    .container button {
+        width: 100%;
+        font-size: 14px;
+        padding: 12px 30px;
+    }
+
+    .container input {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .social-icons a {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .container p, .container span, .container a, .container button {
+        font-size: 12px;
+    }
+
+    .social-icons a {
+        width: 30px;
+        height: 30px;
+    }
+}

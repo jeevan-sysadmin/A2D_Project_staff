@@ -9,21 +9,17 @@ h1 {
   margin-bottom: 1em;
 }
 
-/* Card Styling */
-.MuiCard-root {
-  box-shadow: 0 4px 8px rgb(0, 0, 0);
-  border-radius: 80px;
-  padding: 80px;
+/* Responsive Grid */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
-/* Filter & Action Buttons */
-.MuiCardActions-root {
-  justify-content: space-between;
-}
-
-button {
-  font-size: 0.9em;
-  margin: 4px;
+.card {
+  width: 100%;
+  max-width: 400px;
 }
 
 /* Table Styling */
@@ -41,7 +37,7 @@ button {
 .custom-table td {
   padding: 10px;
   text-align: left;
-  border: 1px solid #000000;
+  border: 1px solid #000000
 }
 
 .custom-table th {
@@ -69,38 +65,7 @@ button {
   font-size: 0.85em;
 }
 
-/* No Submissions Text */
-p {
-  text-align: center;
-  font-size: 1em;
-  color: #888;
-  margin-top: 20px;
-}
-/* FormsData.css */
-.table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.table th,
-.table td {
-  border: 1px solid #000000;
-  padding: 8px;
-  text-align: left;
-}
-
-.table th {
-  background-color: #f4f4f4;
-}
-* Add to ProcessAnalysis.css for styling the export buttons */
-.export-buttons {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
+/* Export Buttons Styling */
 .export-btn {
   padding: 10px 20px;
   background-color: #522da8e1;
@@ -115,4 +80,48 @@ p {
 
 .export-btn:hover {
   background-color: #3a1e8b;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  .custom-table th, .custom-table td {
+    padding: 8px;
+    font-size: 0.85em;
+  }
+
+  .custom-table thead {
+    display: none;
+  }
+
+  .custom-table, .custom-table tbody, .custom-table tr, .custom-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .custom-table tr {
+    margin-bottom: 1em;
+  }
+
+  .custom-table td {
+    display: flex;
+    justify-content: space-between;
+    
+  }
+
+  .custom-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  .export-btn {
+    width: 100%;
+  }
+  
 }

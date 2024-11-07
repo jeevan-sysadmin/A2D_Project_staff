@@ -1,0 +1,102 @@
+/* General Styling */
+.users-table-container {
+  margin: 20px;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.users-table th,
+.users-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #141414;
+}
+
+.users-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .users-table-container {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .users-table th, .users-table td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  /* Stacked Table Layout for Small Screens */
+  .users-table thead {
+    display: none; /* Hide the header on small screens */
+  }
+
+  .users-table, .users-table tbody, .users-table tr, .users-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .users-table tr {
+    margin-bottom: 15px;
+  }
+
+  .users-table td {
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+    font-size: 0.85rem;
+  }
+
+  /* Adding Data Labels for the table */
+  .users-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-align: left;
+    width: 50%;
+  }
+
+  /* Image styling for small screens */
+  .profile-pic {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Very small mobile devices */
+@media (max-width: 480px) {
+  .users-table td {
+    font-size: 0.8rem; /* Make font smaller on smaller screens */
+  }
+
+  .profile-pic {
+    width: 35px;
+    height: 35px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+}

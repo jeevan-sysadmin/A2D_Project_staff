@@ -1,0 +1,52 @@
+.watermark-container {
+    position: fixed;
+    bottom: 10px; /* Adjust this value to set distance from bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: Arial, sans-serif;
+    color: rgba(255, 255, 255, 0.7); /* Slight transparency for watermark */
+    font-size: 14px; /* Default font size for larger screens */
+    text-align: center;
+    z-index: 9999;
+  }
+  
+  /* Watermark text style */
+  .watermark-text {
+    font-size: 12px; /* Default font size */
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  /* Mobile responsiveness - for screens 600px and below */
+  @media (max-width: 600px) {
+    .watermark-container {
+      font-size: 10px; /* Smaller font size for mobile devices */
+    }
+  
+    .watermark-text {
+      font-size: 10px; /* Adjust watermark text size for mobile */
+    }
+  }
+  
+  /* Larger screens (tablets, laptops, etc.) */
+  @media (min-width: 601px) and (max-width: 1024px) {
+    .watermark-container {
+      font-size: 12px; /* Slightly larger font size for medium screens */
+    }
+  
+    .watermark-text {
+      font-size: 12px;
+    }
+  }
+  
+  /* Very large screens (Desktops, large laptops) */
+  @media (min-width: 1025px) {
+    .watermark-container {
+      font-size: 14px; /* Default font size for larger screens */
+    }
+  
+    .watermark-text {
+      font-size: 14px;
+    }
+  }
+  

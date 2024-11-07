@@ -1,0 +1,161 @@
+/* General Layout */
+.process-analysis {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Card Layout */
+.card-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns for desktop */
+  gap: 20px;
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-card,
+.export-card {
+  padding: 20px;
+}
+
+/* Heading */
+h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+/* Select Dropdown */
+.filter label {
+  margin-right: 10px;
+}
+
+select {
+  padding: 5px;
+  font-size: 1rem;
+}
+
+/* Totals Section */
+.totals {
+  margin-top: 20px;
+}
+
+.totals ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.totals li {
+  margin: 1px 0;
+}
+
+/* Filtered Submissions Table */
+.filtered-submissions {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.filtered-submissions table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.filtered-submissions th,
+.filtered-submissions td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #000;
+}
+
+.filtered-submissions th {
+  background-color: #f4f4f4;
+}
+
+/* Export Buttons Section */
+.export-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.export-btn {
+  padding: 10px 20px;
+  background-color: #522da8e1;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 10px 0;
+  transition: background-color 0.3s;
+}
+
+.export-btn:hover {
+  background-color: #ff6600;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .card-container {
+    grid-template-columns: 1fr; /* Stack cards on small screens */
+  }
+
+  h1 {
+    font-size: 1.5rem; /* Slightly smaller header on mobile */
+  }
+
+  .filter label {
+    margin-right: 5px;
+  }
+
+  .filtered-submissions table {
+    font-size: 0.85rem; /* Smaller font size for tables */
+  }
+
+  .filtered-submissions th, .filtered-submissions td {
+    padding: 8px;
+  }
+
+  /* Adjust table to stack rows on mobile */
+  .filtered-submissions th, .filtered-submissions td {
+    display: block;
+    text-align: right;
+  }
+
+  .filtered-submissions td {
+    position: relative;
+    padding-left: 1%;
+  }
+
+  .filtered-submissions td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1px;
+    font-weight: bold;
+  }
+
+  .export-btn {
+    width: 100%; /* Full-width buttons on mobile */
+  }
+}
+
+@media (max-width: 600px) {
+  .export-btn {
+    width: 100%; /* Ensure buttons are full-width on smaller screens */
+  }
+}
