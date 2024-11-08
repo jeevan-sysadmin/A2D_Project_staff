@@ -239,7 +239,8 @@ const FormsData = () => {
               <th>Location</th>
               <th>Monthly Income</th>
               <th>Occupation</th>
-              <th>Purpose</th>
+              <th>Purpose</th><th>Suggestions</th>
+              <th>WhatsApp</th>
               <th>Process Type</th>
               <th>Submission Date</th>
             </tr>
@@ -264,12 +265,15 @@ const FormsData = () => {
                 <td>{submission.monthlyIncome}</td>
                 <td>{submission.occupation}</td>
                 <td>{submission.purpose}</td>
+                <td>{submission.suggestions}</td>
+                <td>{submission.whatsapp}</td>
                 <td>
                   <select
                     value={submission.processType || ''}
                     onChange={(e) => updateProcessType(submission.id, e.target.value)}
                   >
                     <option value="">Select</option>
+                    <option value="progressing">Pending</option>
                     <option value="progressing">Progressing</option>
                     <option value="accept">Accept</option>
                     <option value="reject">Reject</option>
